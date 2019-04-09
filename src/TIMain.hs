@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------
--- TIMain:	Type Inference Algorithm
+-- TIMain:      Type Inference Algorithm
 -- 
 -- Part of `Typing Haskell in Haskell', version of November 23, 2000
 -- Copyright (c) Mark P Jones and the Oregon Graduate Institute

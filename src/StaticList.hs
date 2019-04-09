@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------
--- StaticList:		Static environment for List
+-- StaticList:          Static environment for List
 -- 
 -- Part of `Typing Haskell in Haskell', version of November 23, 2000
 -- Copyright (c) Mark P Jones and the Oregon Graduate Institute

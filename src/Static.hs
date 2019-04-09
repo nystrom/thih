@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------
--- Static:		Utility functions for building static environments
+-- Static:              Utility functions for building static environments
 -- 
 -- Part of `Typing Haskell in Haskell', version of November 23, 2000
 -- Copyright (c) Mark P Jones and the Oregon Graduate Institute
