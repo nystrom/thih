@@ -20,38 +20,39 @@ import Subst
 import Unify
 import Pred
 import Scheme
+import Control.Monad.State
 
-newtype TI a = TI (Subst -> Int -> (Subst, Int, a))
-
-instance Monad TI where
-  return x   = TI (\s n -> (s,n,x))
-  TI f >>= g = TI (\s n -> case f s n of
-                            (s',m,x) -> let TI gx = g x
-                                        in  gx s' m)
+type TI a = State (Subst, Int) a
 
 runTI       :: TI a -> a
-runTI (TI f) = x where (s,n,x) = f nullSubst 0
+runTI f = x where (x, (s,n)) = runState f (nullSubst, 0)
 
 getSubst   :: TI Subst
-getSubst    = TI (\s n -> (s,n,s))
+getSubst    = do { (s,n) <- get; return s }
 
 unify      :: Type -> Type -> TI ()
 unify t1 t2 = do s <- getSubst
                  u <- mgu (apply s t1) (apply s t2)
                  extSubst u
 
-trim       :: [Tyvar] -> TI ()
-trim vs     = TI (\s n ->
-                  let s' = [ (v,t) | (v,t) <-s, v `elem` vs ]
-                      force = length (tv (map snd s'))
-                  in  force `seq` (s', n, ()))
-
 extSubst   :: Subst -> TI ()
-extSubst s' = TI (\s n -> (s'@@s, n, ()))
+extSubst s' = do
+  (s, n) <- get
+  put (s'@@s, n)
+
+trim       :: [Tyvar] -> TI ()
+trim vs     = do
+  (s, n) <- get
+  let s' = [ (v,t) | (v,t) <- s, v `elem` vs ]
+      force = length (tv (map snd s'))
+  force `seq` (put (s', n))
 
 newTVar    :: Kind -> TI Type
-newTVar k   = TI (\s n -> let v = Tyvar (enumId n) k
-                          in  (s, n+1, TVar v))
+newTVar k   = do
+  (s, n) <- get
+  let v = Tyvar (enumId n) k
+  put (s, n+1)
+  return (TVar v)
 
 freshInst               :: Scheme -> TI (Qual Type)
 freshInst (Forall ks qt) = do ts <- mapM newTVar ks

@@ -12,8 +12,9 @@
 -- 
 -----------------------------------------------------------------------------
 
-module PPrint(module PPrint, module Pretty) where
-import Pretty
+module PPrint(module PPrint, module Text.PrettyPrint) where
+import Prelude hiding ((<>))
+import Text.PrettyPrint
 
 -----------------------------------------------------------------------------
 -- This module contains definitions that do not appear in the

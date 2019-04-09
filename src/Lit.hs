@@ -23,6 +23,7 @@ data Literal = LitInt  Integer
              | LitChar Char
              | LitRat  Rational
              | LitStr  String
+             deriving Show
 
 tiLit            :: Literal -> TI ([Pred],Type)
 tiLit (LitChar _) = return ([], tChar)

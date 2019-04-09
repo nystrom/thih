@@ -18,13 +18,13 @@ import Kind
 import PPrint
 
 data Type  = TVar Tyvar | TCon Tycon | TAp  Type Type | TGen Int
-             deriving Eq
+  deriving (Show, Eq)
 
 data Tyvar = Tyvar Id Kind
-             deriving Eq
+  deriving (Show, Eq)
 
 data Tycon = Tycon Id Kind
-             deriving Eq
+  deriving (Show, Eq)
 
 instance PPrint Type where
   pprint    = pptype 0

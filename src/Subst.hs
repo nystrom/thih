@@ -14,7 +14,7 @@
 
 module Subst where
 import Type
-import List(nub, intersect, union)
+import Data.List (nub, intersect, union)
 
 type Subst  = [(Tyvar, Type)]
 

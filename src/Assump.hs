@@ -19,6 +19,7 @@ import Subst
 import PPrint
 
 data Assump = Id :>: Scheme
+  deriving Show
 
 instance PPrint Assump where
   pprint (i :>: s) = (text (show i) <+> text ":>:") $$ nest 2 (pprint s)

@@ -20,7 +20,7 @@ import Pred
 import PPrint
 
 data Scheme = Forall [Kind] (Qual Type)
-              deriving Eq
+              deriving (Show, Eq)
 
 instance PPrint Scheme where
   pprint (Forall ks qt)

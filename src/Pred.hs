@@ -13,8 +13,8 @@
 -----------------------------------------------------------------------------
 
 module Pred where
-import List(union,(\\))
-import Monad(msum)
+import Data.List(union,(\\))
+import Control.Monad(msum)
 import Id
 import Kind
 import Type
@@ -23,13 +23,13 @@ import Unify
 import PPrint
 
 data Qual t = [Pred] :=> t
-              deriving Eq
+              deriving (Show, Eq)
 
 instance PPrint t => PPrint (Qual t) where
   pprint (ps  :=> t) = (pprint ps <+> text ":=>") $$ nest 2 (parPprint t)
 
 data Pred   = IsIn Id Type
-              deriving Eq
+              deriving (Show, Eq)
 
 instance PPrint Pred where
   pprint (IsIn i t) = text "isIn1" <+> text ("c" ++ i) <+> parPprint t

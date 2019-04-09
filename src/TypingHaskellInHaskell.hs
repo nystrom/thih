@@ -25,8 +25,9 @@
 -----------------------------------------------------------------------------
 
 module TypingHaskellInHaskell where
-import List(nub, (\\), intersect, union, partition)
-import Monad(msum)
+import Data.List (nub, (\\), intersect, union, partition)
+import Control.Monad (msum)
+import Control.Monad.State hiding (modify, lift)
 
 -----------------------------------------------------------------------------
 -- Id:          Identifiers
@@ -359,19 +360,13 @@ find i ((i':>:sc):as) = if i==i' then return sc else find i as
 -- TIMonad:     Type inference monad
 -----------------------------------------------------------------------------
 
-newtype TI a = TI (Subst -> Int -> (Subst, Int, a))
-
-instance Monad TI where
-  return x   = TI (\s n -> (s,n,x))
-  TI f >>= g = TI (\s n -> case f s n of
-                            (s',m,x) -> let TI gx = g x
-                                        in  gx s' m)
+type TI a = State (Subst, Int) a
 
 runTI       :: TI a -> a
-runTI (TI f) = x where (s,n,x) = f nullSubst 0
+runTI f = x where (x, (s,n)) = runState f (nullSubst, 0)
 
 getSubst   :: TI Subst
-getSubst    = TI (\s n -> (s,n,s))
+getSubst    = do { (s,n) <- get; return s }
 
 unify      :: Type -> Type -> TI ()
 unify t1 t2 = do s <- getSubst
@@ -379,11 +374,16 @@ unify t1 t2 = do s <- getSubst
                  extSubst u
 
 extSubst   :: Subst -> TI ()
-extSubst s' = TI (\s n -> (s'@@s, n, ()))
+extSubst s' = do
+  (s, n) <- get
+  put (s'@@s, n)
 
 newTVar    :: Kind -> TI Type
-newTVar k   = TI (\s n -> let v = Tyvar (enumId n) k
-                          in  (s, n+1, TVar v))
+newTVar k   = do
+  (s, n) <- get
+  let v = Tyvar (enumId n) k
+  put (s, n+1)
+  return (TVar v)
 
 freshInst               :: Scheme -> TI (Qual Type)
 freshInst (Forall ks qt) = do ts <- mapM newTVar ks

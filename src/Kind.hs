@@ -16,7 +16,7 @@ module Kind where
 import PPrint
 
 data Kind  = Star | Kfun Kind Kind
-             deriving Eq
+             deriving (Show, Eq)
 
 instance PPrint Kind where
   pprint    = ppkind 0

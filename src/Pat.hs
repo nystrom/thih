@@ -31,6 +31,7 @@ data Pat        = PVar Id
                 | PCon Assump [Pat]
 
                 | PLazy Pat
+  deriving Show
 
 tiPat :: Pat -> TI ([Pred], [Assump], Type)
 

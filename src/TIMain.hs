@@ -13,7 +13,7 @@
 -----------------------------------------------------------------------------
 
 module TIMain where
-import List( (\\), intersect, union, partition )
+import Data.List( (\\), intersect, union, partition )
 import Id
 import Kind
 import Type
@@ -76,6 +76,7 @@ elambda alt     = elet [[ ("_lambda",
                            Nothing,
                            [alt]) ]]
                              (evar "_lambda")
+eguarded :: [(Expr, Expr)] -> Expr
 eguarded        = foldr (\(c,t) e -> eif c t e) efail
 efail           = Const ("FAIL" :>: Forall [Star] ([] :=> TGen 0))
 esign e t       = elet [[ ("_val", Just t, [([],e)]) ]] (evar "_val")

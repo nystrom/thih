@@ -2544,13 +2544,13 @@ preludeMems
             ([isIn1 cBounded tChar] :=> 
              tChar)),
      [([],
-       elit (LitChar '\NUL'))]),
+       elit (LitChar (minBound :: Char)))]),
     ("v446",
      Just (Forall []
             ([isIn1 cBounded tChar] :=> 
              tChar)),
      [([],
-       elit (LitChar 'ÿ'))]),
+       elit (LitChar (maxBound :: Char)))]),
     ("v448",
      Just (Forall [Star, Star]
             ([isIn1 cFunctor tMaybe] :=> 
