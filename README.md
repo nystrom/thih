@@ -154,8 +154,8 @@ The following list describes each of the files in the distribution:
 
 Simple example of use:
 
-  Prelude> :l SourcePrelude
-  SourcePrelude> main
-  ... wait a while for the inferred list of typings to be displayed ...
+    Prelude> :l SourcePrelude
+    SourcePrelude> main
+    ... wait a while for the inferred list of typings to be displayed ...
 
 ------------------------------------------------------------------------------
